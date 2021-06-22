@@ -18,4 +18,4 @@ The filters used for the thesis were:
 
 After specifying all the filters, the search results were downloaded in a word document
 
-![alt text](http://url/to/img.png)
+![alt text](https://github.com/lukasbirki/Thesis/blob/main/DIP_Exoprt.png)
