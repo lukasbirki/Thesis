@@ -12,9 +12,12 @@ The main data source constitutes the database of the [Open Discourse Project](ht
 In order to filter the speeches for a specific topic (which is a basic condition for the ideological scaling and ML algorithms), it is necessary to also connect data from the German [Dokumentations- und Informationssystem für Parlamentsmaterialien (DIP)](https://dip.bundestag.de/erweiterte-suche?term=covid-19&rows=25), which is the official documenation and information system for parliamentary materials. Here, users can sort parliamentary texts using several filters, such as time period, subject area or transaction type. 
 
 The filters used for the thesis were:
-- **Date**: `Between January 1, 2020 to December 31, 2020`
-- **Keywords**: `Covid-19` and `TOPIC`
-- **
+- **Format**: `Aktivität`
+- **Datum**: `Between January 1, 2020 to December 31, 2020`
+- **Schlagworte**: `Covid-19` 
+- **Dokumentart**: `Bundestag-Plenarprotokoll`
+- **Aktivitätsart**: `Reden, Wortmeldungen im Plenum` & `Rede`
+- 
 
 After specifying all the filters, the search results were downloaded in a word document (see Figure).
 
