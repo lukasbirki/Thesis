@@ -19,7 +19,7 @@ The filters used for the thesis were:
 After specifying all the filters, the search results were downloaded in a word document (see Figure).
 
 <p align="center">
-<img src="https://github.com/lukasbirki/Thesis/blob/main/DIP_Exoprt.png" alt="Exporting DIP" width="800" style="float: right;">
+<img src="https://github.com/lukasbirki/Thesis/blob/main/Figures/DIP-Export.png" alt="Exporting DIP" width="800" style="float: right;">
 </p>
 
 The `Dip-Export.docx` is then saved in the `data` folder. 
