@@ -19,13 +19,11 @@ The filters used for the [query](https://dip.bundestag.de/erweiterte-suche?fld.0
 - **Aktivitätsart**: `Reden, Wortmeldungen im Plenum` & `Rede`
 
 
-After specifying all the filters, the search results were downloaded in a word document (see Figure).
+After specifying all the filters, the search results were downloaded in a word document and saved under `data/Dip-Export.docx` (see Figure).
 
 <p align="center">
 <img src="https://github.com/lukasbirki/Thesis/blob/main/Figures/DIP-Export.png" alt="Exporting DIP" width="800" style="float: right;">
 </p>
-
-The `Dip-Export.docx` is then saved in the `data` folder. 
 
 ### Merging Data
 
