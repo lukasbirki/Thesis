@@ -34,4 +34,4 @@ speeches %>%
   ))-> speeches_thesis
 
 
-write.csv(speeches_thesis,"./results/dataset_speeches.csv", row.names = FALSE)
+#write.csv(speeches_thesis,"./results/dataset_speeches.csv", row.names = FALSE)

@@ -2,10 +2,8 @@ library(officer)
 library(stringr)
 library(splitstackshape)
 
-rm(list = ls())
-
 source("Scripts/Data_Preprocessing.R") #takes around 1 minute
-source("Scripts/helper_functions.R") #takes around 1 minute
+source("Scripts/helper_functions.R") 
 
 # Importing Data from LINK ----
 dip_selection <- read_docx("data/Dip-Export.docx")
@@ -34,14 +32,15 @@ df_docx_wide %>%
   rowwise() %>% 
   mutate(across(c(date_final), reverse_words_helper)) -> df_docx_final
 
-speeches$date <- as.character(speeches$date)
+speeches_thesis$date <- as.character(speeches_thesis$date)
 names(df_docx_final)[6] <- "lastName"
-names(speeches)[12] <- "date_final"
+names(speeches_thesis)[12] <- "date_final"
 
 
-final_df <-  speeches %>% 
+final_df <-  speeches_thesis %>% 
   merge(.,df_docx_final, by = c('date_final', 'lastName')) %>% 
   as_tibble() %>% 
-  select(date_final, speechContent, session, MP_1, MP_2, MP_3, positionShort)
+  select(date_final, speechContent, session, MP_1, MP_2, MP_3, positionShort) %>% 
+  filter(positionShort == "Member of Parliament")
 
 
