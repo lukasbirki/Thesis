@@ -1,11 +1,12 @@
 # Replication Data for Thesis "Measuring Polarization"
 
-## Data
+## Data 
 
 ### Raw Data
 The main data source constitutes the database of the [Open Discourse Project](https://opendiscourse.de/). The organization provides a database of all parliamentary debates from the German Bundestag between 1945 and 2020. They directly retrieve their data from the German Bundestag [Open Data Portal](https://www.bundestag.de/services/opendata), which provides the transcripts in PDF and XML format. The parsed data can be freely downloaded from [Harvard Dataverse](https://dataverse.harvard.edu/dataverse/opendiscourse).
 
-Richter, F.; Koch, P.; Franke, O.; Kraus, J.; Kuruc, F.; Thiem, A.; Högerl, J.; Heine, S.; Schöps, K., 2020, "Open Discourse", https://doi.org/10.7910/DVN/FIKIBO, Harvard Dataverse
+Citation: 
+>> Richter, F.; Koch, P.; Franke, O.; Kraus, J.; Kuruc, F.; Thiem, A.; Högerl, J.; Heine, S.; Schöps, K., 2020, "Open Discourse", https://doi.org/10.7910/DVN/FIKIBO, Harvard Dataverse
 
 ### Link to documenation and information system (DIP)
 
