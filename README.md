@@ -22,12 +22,14 @@ After specifying all the filters, the search results were downloaded in a word d
 <img src="https://github.com/lukasbirki/Thesis/blob/main/DIP_Exoprt.png" alt="Exporting DIP" width="800" style="float: right;">
 </p>
 
-In order to parse the search results, the Word-Document `Dip-Export.docx` can be read into R using the following script
+The `Dip-Export.docx` is then saved in the `data` folder. 
+
+### Merging Data
+
+In order to filter the primary `speeches.csv` dataset based on the selection in the `Dip-Export.docx`, the files were parsed by running the the following script. 
 
 ```R
 Filter_Speeches.R
 ```
+Ultimately, the output of the script provides the filtered dataset, which can be used for further analysis. 
 
-### Merging Data
-
-In a last step, the primary `speeches.csv` dataset was further filtered by the 
