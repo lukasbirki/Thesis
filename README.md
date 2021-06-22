@@ -18,4 +18,5 @@ The filters used for the thesis were:
 
 After specifying all the filters, the search results were downloaded in a word document
 
-![alt text](https://github.com/lukasbirki/Thesis/blob/main/DIP_Exoprt.png)
+<img src="https://github.com/lukasbirki/Thesis/blob/main/DIP_Exoprt.png" width="400" height="790">
+
