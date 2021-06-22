@@ -27,7 +27,7 @@ After specifying all the filters, the search results were downloaded in a word d
 
 ### Merging Data
 
-In order to filter the primary `speeches.csv` dataset based on the selection in the `Dip-Export.docx`, the files were parsed by running the the following script. 
+In order to filter the primary `data/speeches.csv` dataset based on the selection in the `data/Dip-Export.docx`, the files were parsed by running the the following script. 
 
 ```R
 Filter_Speeches.R
