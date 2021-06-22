@@ -16,8 +16,9 @@ The filters used for the thesis were:
 - **Keywords**: `Covid-19` and `TOPIC`
 -...
 
-After specifying all the filters, the search results were downloaded in a word document
+After specifying all the filters, the search results were downloaded in a word document (see Figure).
 
 <p align="center">
 <img src="https://github.com/lukasbirki/Thesis/blob/main/DIP_Exoprt.png" alt="Exporting DIP" width="800" style="float: right;">
 </p>
+
