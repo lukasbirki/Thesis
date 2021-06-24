@@ -1,3 +1,5 @@
+# Defining Functions ----
+
 # Reverse words
 reverse_words_helper <- function(string)
 {
