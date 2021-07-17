@@ -1,52 +1,12 @@
-library(tidyverse)
-library(tidytext)
-library(SnowballC)
-library(gridExtra)
-library(grid)
-library(ggplot2)
-library(haven)
 library(officer)
 library(stringr)
 library(splitstackshape)
 
-rm(list = ls())
+source("Scripts/Data_Preprocessing.R") #takes around 1 minute
+source("Scripts/helper_functions.R") 
 
-source("helper_functions.R")
-
-#Preparation ----
-
-## Loading Data ----
-
-#Speeches Data
-speeches <- as_tibble(read_csv("./data/speeches.csv"))
-
-#Hand-Coded Data
-df_handcoded <- read_dta("./data/multilevel_nov20.dta")
-
-# DIP_Selection
-df_DIP_filter<- read_docx("data/Dip-Export.docx")
-
-## Data Wrangling ----
-
-speeches %>% 
-  filter(electoralTerm == 19 & positionShort == 'Member of Parliament') %>% 
-  mutate(count_words = sapply(strsplit(.$speechContent, " "), length)) %>% 
-  filter(count_words <1000 & count_words > 100)  %>% 
-  filter(factionId %in% c(0, 3, 4,6, 13,23)) %>% 
-  mutate(Party = case_when(
-    factionId == 0 ~ "AFD",
-    factionId == 3 ~ "Greens",
-    factionId == 4 ~ "CDU/CSU",
-    factionId == 6 ~ "DIE LINKE.",
-    factionId == 13 ~ "FDP",
-    factionId == 23~ "SPD",
-    TRUE ~ NA_character_
-  ))  %>% mutate(Ruling_Party = case_when(
-    Party == "CDU/CSU" | Party == "SPD" ~ 1,
-    TRUE ~ 0
-  ))-> df_speeches
-
-
+# Importing Data from LINK ----
+dip_selection <- read_docx("data/Dip-Export.docx")
 
 #Filtering and Reshaping
 dip_selection %>% 
@@ -83,4 +43,4 @@ final_df <-  speeches_thesis %>%
   select(date_final, speechContent, session, MP_1, MP_2, MP_3, positionShort) %>% 
   filter(positionShort == "Member of Parliament")
 
-#write.csv(speeches_thesis,"./results/dataset_speeches.csv", row.names = FALSE)
+

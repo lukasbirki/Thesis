@@ -1,24 +1,11 @@
-source("Scripts/Data_Preprocessing.R") #takes around 1 minute
 
-sw <- tibble(stopwords::stopwords("de"))
-sw$sw <- sw$`stopwords::stopwords("de")`
-
-tidy_df %>% 
-  #slice(1:5000) %>% 
-  anti_join(.,sw, by = c("word" = "sw")) %>% #Removing Stopwords (from 9,65m to 4,73m)
-
-# Preprocessing ----
-speeches_thesis %>% 
-  tidytext::unnest_tokens(word, speechContent) -> tidy_df
-
-tidy_df %>% 
-  #slice(1:5000) %>% 
-  anti_join(.,sw, by = c("word" = "sw")) %>% #Removing Stopwords (from 9,65m to 4,73m)
-  filter(str_detect(word, "[a-z]")) %>% #Removing numbers
-  mutate(token_stem = SnowballC::wordStem(.$word, language = "german")) -> tidy_df #Word Stemming
-
+###
+### Ideological Scaling Approach ###
+###
 
 # Loading Dictionary ----
+sw <- tibble(stopwords::stopwords("de"))
+sw$sw <- sw$`stopwords::stopwords("de")`
 
 read_tsv("./data/SentiWS_v2.0/SentiWS_v2.0_Negative.txt", col_names = FALSE) %>% 
   rename("Wort_POS" = "X1", "Wert" = "X2", "Inflektionen" = "X3" ) %>% 
@@ -32,128 +19,99 @@ read_tsv("./data/SentiWS_v2.0/SentiWS_v2.0_Positive.txt", col_names = FALSE) %>%
 
 bind_rows("neg" = neg_df, "pos" = pos_df, .id = "neg_pos") %>% 
   select(neg_pos, Wort, Wert, Inflektionen, -Wort_POS) %>% 
-  mutate(token_stem = SnowballC::wordStem(.$Wort, language = "german"))-> sentiment_df
+  mutate(token_stem = SnowballC::wordStem(.$Wort, language = "german")) %>% 
+  mutate(Polarity = .$Wert * -1)-> sentiment_df
 
 # Analysis ----
 
+## Removing Stopwords ----
+df_base %>% 
+  tidytext::unnest_tokens(word, speechContent, drop = F) %>% 
+  anti_join(.,sw, by = c("word" = "sw")) %>% #Removing Stopwords 
+  filter(str_detect(word, "[a-z]")) %>% #Removing numbers
+  mutate(token_stem = SnowballC::wordStem(.$word, language = "german")) -> tidy_df #Word Stemmming-> tidy_df
+
+rm(neg_df, pos_df, sw)
+
+## Matching Sentiment Values ----
 tidy_df %>% 
-  mutate(WordScore = ifelse(.$word %in% sentiment_df$Wort, sentiment_df$Wert,NA)) %>% 
-  mutate(WordScore2 = ifelse(.$token_stem %in% sentiment_df$token_stem, sentiment_df$Wert,NA)) -> final
+  rowwise() %>% 
+  mutate(WordScore_token_stem = ifelse(token_stem %in% sentiment_df$token_stem, 
+                            sentiment_df$Polarity[match(token_stem, sentiment_df$token_stem)], NA)) -> sentiment_df_final
 
-#Checking number of correct matches
 
-summary(final$WordScore)
-summary(final$WordScore2)
+## Statistics ----
 
-final %>% 
+### Percent of words with an assigned Sentiment Score ----
+length(sentiment_df_final$WordScore_token_stem[!is.na(sentiment_df_final$WordScore_token_stem)])/length(sentiment_df_final$WordScore_token_stem)
+
+### Show most frequent 100 words with a sentiment Score ----
+sentiment_df_final %>% 
+  filter(WordScore_token_stem != is.na(WordScore_token_stem)) %>% 
+  group_by(token_stem) %>% 
+  mutate(n = n()) %>% 
+  ungroup() %>% 
+  select(token_stem, n, WordScore_token_stem) %>% unique() %>% 
+  arrange(desc(n)) %>% 
+  head(n = 100) -> df_words_count_withscore
+
+### Show most frequent 100 words without a sentiment Score ----
+sentiment_df_final %>% 
+  filter(is.na(WordScore_token_stem)) %>% 
+  group_by(token_stem) %>% 
+  mutate(n = n()) %>% 
+  ungroup() %>% 
+  select(token_stem, n) %>% unique() %>% 
+  arrange(desc(n)) %>% 
+  head(n = 100) -> df_words_count_withoutscore
+
+
+## Calculating Sentiment Scores for Speeches and Sessions ----
+sentiment_df_final %>%
   group_by(id) %>% 
-  summarise_at(vars(WordScore2),              # Specify column
-               list(sentiment_id = mean), na.rm=T) -> ID_level
+  mutate(Score_id = mean(WordScore_token_stem, na.rm = T)) %>% 
+  ungroup() %>% 
+  group_by(date) %>% 
+  mutate(Score_date = mean(WordScore_token_stem, na.rm = T)) %>% 
+  ungroup() -> df_sentiment
 
-final_2 %>% 
-  group_by(session) %>% 
-  summarise_at(vars(sentiment),              # Specify column
-               list(sentiment_session = mean), na.rm=T) -> Session_level
-
-speeches_thesis %>% 
-  left_join(., y = ID_level, by = c("id" = "id")) %>% 
-  left_join(., y = Session_level, by = c("session" = "session")) -> final_sentiment
-
-
-
-final_sentiment %>% 
-  #filter(date > "2020-01-01") %>% 
-  ggplot(data=., aes(x=date, y=sentiment_session)) +
-  geom_point() +
-  geom_line()
-
-write.csv(final_sentiment,"./results/dataset_speeches_dict.csv", row.names = FALSE)
-jsonlite::write_json(final_sentiment,"dataset_speeches_dict.json")
+#Merging with df_base
+df_sentiment %>% 
+  group_by(speechContent) %>% 
+  summarise(sentiment_score_session = unique(Score_date),
+            sentiment_Score_id = unique(Score_id)) %>% 
+  left_join(df_base, ., by = "speechContent")-> df_base
 
 # Plots ----
-## 
-tidy_df %>% 
-  slice(1:1000) %>% 
-  dplyr::count(word, sort = TRUE) %>% 
-  top_n(30) %>% 
-  ggplot() +
-  aes(x = reorder(word, n), y = n) +
-  geom_col() + 
-  labs(title = "With Stemming") +
-  coord_flip() -> p1
 
-tidy_df %>% 
-  slice(1:1000) %>% 
-  dplyr::count(token_stem, sort = TRUE) %>% 
-  top_n(30) %>% 
-  ggplot() +
-  aes(x = reorder(token_stem, n), y = n) +
-  geom_col() + 
-  labs(title = "without Stemming") +
-  coord_flip() -> p2
+## Plot: Sentiment per Session ----
 
-grid.arrange(p1, p2, ncol = 2)
+plot_sentiment <- df_base %>%
+  group_by(date) %>%
+  distinct(date, sentiment_score_session) %>% 
+  mutate(date = as.Date(date)) %>% 
+  ggplot(aes(x = date, y = sentiment_score_session)) +
+  geom_line(stat="identity") +
+  geom_point() +
+  geom_hline(yintercept = 0)+
+  ggtitle("Sentiment Score per Session" ) +
+  labs(y = "Sentiment (Polarity) Score per Session", x = "Time") +
+  hrbrthemes::theme_ipsum(grid = "X") +
+  scale_x_date(date_labels="%b %y",date_breaks  ="1 month")
 
-tidy_df %>% 
-  filter(id ==1000315) %>% 
-  select(word) %>% 
-  print(n = 40)
+ggsave("./Figures/Figures/sentiment_session.png", plot = plot_sentiment, height = 9)
 
-tidy_df %>% 
-  filter(id ==1000315) %>% 
-  select(word) %>% 
-  print(n = 40)
+## Plot: Sentiment per Speech ----
 
-tidy_df %>% 
-  count(word, sort = T) %>% 
-  print(n=40)
-
-
-# Plots
-## Total counts of speeches lengths
-p1 <- speeches_thesis %>% 
-  ggplot(aes(x = count_words)) +
-  geom_histogram(binwidth=1) +
-  ggtitle("Total Distribution of spech lenght") +
-  theme(plot.title = element_text(hjust = 0.5) )
-
-# Count of speeches lengths per session
-# p2 <- speeches_thesis %>% 
-#   group_by(session) %>% 
-#   summarise(count = n()) %>%
-#   ggplot(aes(x = session, y = count)) +
-#   geom_col(width = 1) +
-#   ggtitle("Number of speeches per session of the Bundestag")
-#   
-# Count of Speeches per time period
-
-p2 <- speeches_thesis %>% 
-  group_by(date) %>% 
-  summarise(count = n()) %>%
-  ggplot(aes(x = date, y = count)) +
-  geom_col(width = 3) +
-  theme_classic() 
-
-p3 <- speeches_thesis %>% 
-  group_by(Party) %>% 
-  summarise(count = n()) %>%
-  arrange(desc(count)) %>% 
-  ggplot(aes(x = reorder(Party,-count), y = count, fill=factor(count))) +
-  geom_bar(stat="identity") +
-  ggtitle("Number of Speeches per Party") +
-  scale_fill_manual("Party", 
-                    values = c( "hotpink3","green","yellow","blue","red", "black"),
-                    labels = c("Die LInke","Grüne","FDP","AFD","SPD","CDU")) +
-  theme(plot.title = element_text(hjust = 0.5) )
-
-phd_field %>% 
-  group_by(broad_field,field) %>%
-  summarise(n=sum(n_phds, na.rm=TRUE)) %>%
-  arrange(desc(n))%>%
-  head(30)%>%
-  ggplot(aes(x=reorder(field,-n),y=n, fill=broad_field)) +
-  xlab("field")+
-  geom_col()
-
-
-grid.arrange(p1, p2, p3, nrow = 3)
+df_base %>%
+  filter(sentiment_Score_id <=0.5) %>% 
+  ggplot(aes(x = as.character(date), y = sentiment_Score_id, group = as.character(date))) +
+  geom_boxplot() +
+  viridis::scale_fill_viridis(discrete = T, alpha=0.6) +
+  hrbrthemes::theme_ipsum() +
+  theme(
+    legend.position="none",
+    plot.title = element_text(size=11)
+  ) +
+  ggtitle("Basic boxplot") +
+  xlab("")
