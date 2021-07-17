@@ -114,19 +114,7 @@ df_base <-  right_join(df_speeches, df_docx_final, by = c('date', 'lastName', 'P
   mutate(count_words = sapply(strsplit(.$speechContent, " "), length)) %>% 
   drop_na()#count_words
 
-## Filtering with descriptive statistics ----
-
-df_base %>% 
-  count(session, Ruling_Party) %>% 
-  pivot_wider(id_cols = session,names_from = Ruling_Party, values_from =n ) %>% 
-  mutate(n = `0`+`1`) %>% 
-  mutate(share_government = `1`/n) %>% 
-  mutate(Removed = case_when(
-    (session == 195 |  session == 186 |session == 187 |session == 202) ~ "Removed",
-    T ~ "Not Removed"
-  ))  %>% 
-  xtable::xtable() %>% 
-  print(., file = "./Figures/Tables/ratio_sessions.tx")
+## Filtering II> descriptive statistics ----
 
 #Dropping the following debates due to inbalanced/to few data ponits
 
@@ -140,9 +128,29 @@ df_base %>%
 df_base %>% 
   filter(session != 195 & session != 186 & session != 187 & session != 202 ) -> df_base
 
+## Data Preprocessing ----
+
+#Here come the following 
+
+
 #df_base %>% write.csv(., file = "data/df_base.csv")
 
-# Descriptive Statistics ----
+# Plots Descriptive Statistics ----
+
+### Latex: Ratio and n of speeches per Session ----
+df_base %>% 
+  count(session, Ruling_Party) %>% 
+  pivot_wider(id_cols = session,names_from = Ruling_Party, values_from =n ) %>% 
+  mutate(n = `0`+`1`) %>% 
+  mutate(share_government = `1`/n) %>% 
+  mutate(Removed = case_when(
+    (session == 195 |  session == 186 |session == 187 |session == 202) ~ "Removed",
+    T ~ "Not Removed"
+  ))  %>% 
+  xtable::xtable() %>% 
+  print(., file = "./Figures/Tables/ratio_sessions.tx")
+
+
 
 ## Latex: Number of Sessions ----
 

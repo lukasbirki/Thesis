@@ -39,6 +39,12 @@ shift_axis <- function(p, xmin, xmax, y=0){
   
 }
 
+sw <- tibble(stopwords::stopwords("de"))
+sw$sw <- sw$`stopwords::stopwords("de")`
+sw <- as_tibble(sw$sw)
+additional_stopwords <- c('dass') %>% as.tibble()
+sw <- rbind(sw,additional_stopwords )
+
 
 c('Herr Präsident', 'Frau Präsidentin',
   'Herr Präsident', 'Frau Präsidentin',

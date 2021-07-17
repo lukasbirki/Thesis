@@ -1,0 +1,61 @@
+% latex table generated in R 4.1.0 by xtable 1.8-4 package
+% Tue Jul 20 14:51:43 2021
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlrr}
+  \hline
+ & word & n & WordScore\_token\_stem \\ 
+  \hline
+1 & schon & 739 & -0.01 \\ 
+  2 & gut & 621 & -0.37 \\ 
+  3 & dank & 527 & -0.19 \\ 
+  4 & wichtig & 483 & -0.38 \\ 
+  5 & richtig & 455 & -0.00 \\ 
+  6 & imm & 434 & -0.00 \\ 
+  7 & gross & 406 & -0.37 \\ 
+  8 & wirtschaft & 386 & -0.00 \\ 
+  9 & moglich & 340 & -0.00 \\ 
+  10 & klar & 322 & -0.00 \\ 
+  11 & lieb & 300 & -0.11 \\ 
+  12 & genau & 277 & -0.00 \\ 
+  13 & neu & 274 & -0.00 \\ 
+  14 & stark & 270 & -0.00 \\ 
+  15 & gemeinsam & 266 & -0.00 \\ 
+  16 & schnell & 259 & -0.12 \\ 
+  17 & sich & 253 & -0.37 \\ 
+  18 & unterstutz & 227 & -0.00 \\ 
+  19 & besond & 225 & -0.00 \\ 
+  20 & bereit & 225 & -0.00 \\ 
+  21 & bess & 216 & -0.00 \\ 
+  22 & helf & 212 & -0.37 \\ 
+  23 & sorg & 209 & 0.00 \\ 
+  24 & einfach & 205 & -0.00 \\ 
+  25 & bereich & 191 & -0.07 \\ 
+  26 & verantwort & 188 & -0.00 \\ 
+  27 & klein & 168 & 0.27 \\ 
+  28 & aktuell & 163 & -0.00 \\ 
+  29 & leid & 161 & 0.16 \\ 
+  30 & fall & 158 & 0.22 \\ 
+  31 & gesund & 152 & -0.16 \\ 
+  32 & nachhalt & 148 & -0.00 \\ 
+  33 & ford & 145 & -0.00 \\ 
+  34 & herzlich & 144 & -0.00 \\ 
+  35 & pfleg & 143 & -0.23 \\ 
+  36 & schaff & 133 & -0.00 \\ 
+  37 & bitt & 133 & 0.34 \\ 
+  38 & falsch & 118 & 0.76 \\ 
+  39 & kurz & 116 & 0.00 \\ 
+  40 & fuhr & 100 & -0.00 \\ 
+  41 & gefahr &  99 & 0.64 \\ 
+  42 & erhalt &  98 & -0.00 \\ 
+  43 & nutz &  91 & -0.00 \\ 
+  44 & schwierig &  91 & 0.02 \\ 
+  45 & alt &  85 & 0.00 \\ 
+  46 & konkret &  81 & -0.00 \\ 
+  47 & einschrank &  80 & 0.33 \\ 
+  48 & schwer &  79 & 0.00 \\ 
+  49 & zustimm &  78 & -0.00 \\ 
+  50 & beitrag &  77 & -0.00 \\ 
+   \hline
+\end{tabular}
+\end{table}

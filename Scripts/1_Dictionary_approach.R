@@ -4,8 +4,7 @@
 ###
 
 # Loading Dictionary ----
-sw <- tibble(stopwords::stopwords("de"))
-sw$sw <- sw$`stopwords::stopwords("de")`
+
 
 read_tsv("./data/SentiWS_v2.0/SentiWS_v2.0_Negative.txt", col_names = FALSE) %>% 
   rename("Wort_POS" = "X1", "Wert" = "X2", "Inflektionen" = "X3" ) %>% 
@@ -22,22 +21,16 @@ bind_rows("neg" = neg_df, "pos" = pos_df, .id = "neg_pos") %>%
   mutate(token_stem = SnowballC::wordStem(.$Wort, language = "german")) %>% 
   mutate(Polarity = .$Wert * -1)-> sentiment_df
 
+rm(neg_df, pos_df)
+
 # Analysis ----
 
-## Removing Stopwords ----
-df_base %>% 
-  tidytext::unnest_tokens(word, speechContent, drop = F) %>% 
-  anti_join(.,sw, by = c("word" = "sw")) %>% #Removing Stopwords 
-  filter(str_detect(word, "[a-z]")) %>% #Removing numbers
-  mutate(token_stem = SnowballC::wordStem(.$word, language = "german")) -> tidy_df #Word Stemmming-> tidy_df
-
-rm(neg_df, pos_df, sw)
-
 ## Matching Sentiment Values ----
-tidy_df %>% 
+df_base %>% 
+  tidytext::unnest_tokens(word, speechContent_stemmed, drop = F) %>% 
   rowwise() %>% 
-  mutate(WordScore_token_stem = ifelse(token_stem %in% sentiment_df$token_stem, 
-                            sentiment_df$Polarity[match(token_stem, sentiment_df$token_stem)], NA)) -> sentiment_df_final
+  mutate(WordScore_token_stem = ifelse(word %in% sentiment_df$token_stem, 
+                            sentiment_df$Polarity[match(word, sentiment_df$token_stem)], NA)) -> sentiment_df_final
 
 
 ## Statistics ----
@@ -48,22 +41,26 @@ length(sentiment_df_final$WordScore_token_stem[!is.na(sentiment_df_final$WordSco
 ### Show most frequent 100 words with a sentiment Score ----
 sentiment_df_final %>% 
   filter(WordScore_token_stem != is.na(WordScore_token_stem)) %>% 
-  group_by(token_stem) %>% 
+  group_by(word) %>% 
   mutate(n = n()) %>% 
   ungroup() %>% 
-  select(token_stem, n, WordScore_token_stem) %>% unique() %>% 
+  select(word, n, WordScore_token_stem) %>% unique() %>% 
   arrange(desc(n)) %>% 
-  head(n = 100) -> df_words_count_withscore
+  head(n = 50) %>% 
+  xtable::xtable() %>% 
+  print(., file = "./Figures/Tables/with_sentiment_Score.tx")
 
 ### Show most frequent 100 words without a sentiment Score ----
 sentiment_df_final %>% 
   filter(is.na(WordScore_token_stem)) %>% 
-  group_by(token_stem) %>% 
+  group_by(word) %>% 
   mutate(n = n()) %>% 
   ungroup() %>% 
-  select(token_stem, n) %>% unique() %>% 
+  select(word, n) %>% unique() %>% 
   arrange(desc(n)) %>% 
-  head(n = 100) -> df_words_count_withoutscore
+  head(n = 50) %>% 
+  xtable::xtable() %>% 
+  print(., file = "./Figures/Tables/without_sentiment_Score.tx")
 
 
 ## Calculating Sentiment Scores for Speeches and Sessions ----

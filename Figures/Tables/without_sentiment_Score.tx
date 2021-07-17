@@ -1,0 +1,61 @@
+% latex table generated in R 4.1.0 by xtable 1.8-4 package
+% Tue Jul 20 15:11:49 2021
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlr}
+  \hline
+ & word & n \\ 
+  \hline
+1 & dass & 3320 \\ 
+  2 & muss & 1140 \\ 
+  3 & uns & 949 \\ 
+  4 & viel & 826 \\ 
+  5 & mensch & 759 \\ 
+  6 & land & 714 \\ 
+  7 & herr & 710 \\ 
+  8 & ganz & 690 \\ 
+  9 & sag & 682 \\ 
+  10 & mehr & 680 \\ 
+  11 & europa & 650 \\ 
+  12 & heut & 602 \\ 
+  13 & ja & 595 \\ 
+  14 & kris & 581 \\ 
+  15 & deutschland & 575 \\ 
+  16 & geht & 560 \\ 
+  17 & massnahm & 539 \\ 
+  18 & euro & 528 \\ 
+  19 & brauch & 514 \\ 
+  20 & gibt & 510 \\ 
+  21 & jahr & 498 \\ 
+  22 & erst & 467 \\ 
+  23 & mal & 466 \\ 
+  24 & dafur & 457 \\ 
+  25 & stell & 428 \\ 
+  26 & frag & 427 \\ 
+  27 & desweg & 420 \\ 
+  28 & deshalb & 413 \\ 
+  29 & gerad & 413 \\ 
+  30 & unternehm & 391 \\ 
+  31 & antrag & 386 \\ 
+  32 & natur & 384 \\ 
+  33 & deutsch & 357 \\ 
+  34 & gesetz & 354 \\ 
+  35 & bundesregier & 353 \\ 
+  36 & zeit & 352 \\ 
+  37 & kolleg & 352 \\ 
+  38 & dam & 337 \\ 
+  39 & wurd & 323 \\ 
+  40 & weit & 321 \\ 
+  41 & seit & 318 \\ 
+  42 & glaub & 318 \\ 
+  43 & eben & 318 \\ 
+  44 & tun & 311 \\ 
+  45 & komm & 309 \\ 
+  46 & woch & 305 \\ 
+  47 & war & 303 \\ 
+  48 & milliard & 297 \\ 
+  49 & pandemi & 294 \\ 
+  50 & letzt & 289 \\ 
+   \hline
+\end{tabular}
+\end{table}

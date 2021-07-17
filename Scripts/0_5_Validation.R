@@ -8,7 +8,6 @@ df_gesis <- read.csv('/Users/lukas/OneDrive - University of Warwick/Dokumente/Un
 
 ##  Hand-Coded Speeches ----
 #Official Dataset as in Open Science 
-df_validation <- readxl::read_excel("data/Coding_Germany_for_stata.xlsx")
 
 df_validation %>%
   filter(chair != 1 & interruption == 0) %>% 
@@ -105,4 +104,4 @@ p_validation <- df_base %>%
     axis.text.x = element_text(angle = 45, hjust = 1, color = "black", size = 11),
     legend.position = "top") + guides(colour = guide_legend(nrow = 1))
 
-ggsave("./Figures/Figures/validation.png", plot = p_validation, height = 9)
+ggsave("./Figures/Figures/validation.png", plot = p_validation, height = 6)

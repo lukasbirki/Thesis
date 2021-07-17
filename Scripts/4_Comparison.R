@@ -14,9 +14,6 @@ df_base$validation_speech_scaled <- scale(df_base$validation_speech) %>% as.vect
 df_base$validation_session_scaled <- scale(df_base$validation_session) %>% as.vector()
 df_base$ML_accuracy_scaled <- scale(df_base$`Accuracy Score`) %>% as.vector()
 
-df_base %>% 
-  #filter(validation_session_scaled != is.na(validation_session_scaled)) %>% 
-  count(date) -> sortt
 
 # Plots ----
 
