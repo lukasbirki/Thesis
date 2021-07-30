@@ -100,7 +100,7 @@ ggsave("./Figures/Figures/sentiment_session.png", plot = plot_sentiment, height 
 
 ## Plot: Sentiment per Speech ----
 
-df_base %>%
+plot_sentiment_box <- df_base %>%
   filter(sentiment_Score_id <=0.5) %>% 
   ggplot(aes(x = as.character(date), y = sentiment_Score_id, group = as.character(date))) +
   geom_boxplot() +
@@ -112,3 +112,6 @@ df_base %>%
   ) +
   ggtitle("Basic boxplot") +
   xlab("")
+
+ggsave("./Figures/Figures/sentiment_session.png", plot = plot_sentiment_box, height = 9)
+

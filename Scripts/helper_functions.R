@@ -1,3 +1,21 @@
+library(tidyverse)
+library(tidytext)
+library(SnowballC)
+library(gridExtra)
+library(grid)
+library(ggplot2)
+library(haven)
+library(officer)
+library(stringr)
+library(splitstackshape)
+require(devtools)
+library(glmnet)
+library(quanteda)
+library(quanteda.textmodels)
+library(quanteda.textplots)
+library(readtext)
+
+
 # Defining Functions ----
 
 # Reverse words
@@ -21,6 +39,7 @@ reverse_words_helper <- function(string)
 } 
 
 
+
 IsDate <- function(mydate, date.format = "%d/%m/%y") {
   tryCatch(!is.na(as.Date(mydate, date.format)),  
            error = function(err) {FALSE})  
@@ -42,7 +61,7 @@ shift_axis <- function(p, xmin, xmax, y=0){
 sw <- tibble(stopwords::stopwords("de"))
 sw$sw <- sw$`stopwords::stopwords("de")`
 sw <- as_tibble(sw$sw)
-additional_stopwords <- c('dass') %>% as.tibble()
+additional_stopwords <- c('dass') %>% as_tibble()
 sw <- rbind(sw,additional_stopwords )
 
 

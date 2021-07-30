@@ -3,7 +3,7 @@
 ### ML Approach ###
 ###
 
-df_base_ML <- as_tibble(read_csv("./data/df_base_ML.csv", col_names = ))
+df_base_ML <- as_tibble(read_csv("./data/df_base_ML.csv" ))
 
 j <- 1
 confusion_martices <- list()
